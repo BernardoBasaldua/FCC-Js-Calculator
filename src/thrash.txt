@@ -1,0 +1,210 @@
+const textOnChange = event =>{
+    if (event === numOp[16]) {
+      setText(0);
+      setCurrentVar('');
+      sum = [];
+      console.log(sum);
+      //sum = '';
+    } else {
+      setText(event);
+      if (currentVar === '' && text === 0) {
+        setCurrentVar(event);
+        aux = event;
+      } else if (currentVar[0] === '0') {
+        setCurrentVar(event);
+        aux = event;
+      } else {
+        if (event !== numOp[0] && event !==numOp[1] && event !==numOp[5] && event !==numOp[9] && event !==numOp[13]) {
+          setCurrentVar(currentVar+event);
+          aux += event;
+        } else {
+          if (sum[sum.length-1] !== numOp[0] && sum[sum.length-1] !==numOp[1] && sum[sum.length-1] !==numOp[5] && sum[sum.length-1] !==numOp[9] && sum[sum.length-1] !==numOp[13]) {
+            sum.push(aux);
+            sum.push(event);
+            aux = '';
+            console.log(sum);
+            setCurrentVar(currentVar+event);
+          } else if ((sum[sum.length-1] === numOp[0] || sum[sum.length-1] ===numOp[1] || sum[sum.length-1] ===numOp[5] || sum[sum.length-1] ===numOp[9] || sum[sum.length-1] ===numOp[13]) && event === numOp[5]){
+            //sum.push(aux);
+            sum.push(event);
+            //aux = '';
+            console.log(sum);
+            setCurrentVar(currentVar+event);
+          } else {
+            sum[sum.length - 1] = event;
+            console.log(sum);
+            setCurrentVar(currentVar+event);
+          }
+        }
+      }
+    }
+  }
+
+
+  if (isOperator(event)) {
+      if (cOp < 2) {
+        setReg(reg + event);
+        setCurrentVar(event);
+        cOp++;
+        console.log(cOp);
+      } else {
+        setReg(reg.substring(0, reg.length - 2) + event);
+        setCurrentVar(event);
+        cOp = 1;
+        console.log(cOp);
+      }
+    }
+
+    if (reg === "") {
+            setReg(event);
+            setCurrentVar(event);
+            cOp++;
+            console.log(cOp);
+          } else {
+            if (cOp < 2) {
+              setReg(reg + event);
+              cOp++;
+              console.log(cOp);
+            } else {
+              setReg(reg.substring(0, reg.length - 2) + event);
+              setCurrentVar(event);
+              cOp = 1;
+              console.log(cOp);
+            }
+          }
+
+const calculate = () => {
+    // if last char is an operator, do nothing
+    if (isOperator(ct.charAt(ct.length - 1))) return;
+    // clean the expression so that two operators in a row uses the last operator
+    // 5 * - + 5 = 10
+    const parts = ct.split(" ");
+    const newParts = [];
+
+    // go through parts backwards
+    for (let i = parts.length - 1; i >= 0; i--) {
+      if (["*", "/", "+"].includes(parts[i]) && isOperator(parts[i - 1])) {
+        newParts.unshift(parts[i]);
+        let j = 0;
+        let k = i - 1;
+        while (isOperator(parts[k])) {
+          k--;
+          j++;
+        }
+        i -= j;
+      } else {
+        newParts.unshift(parts[i]);
+      }
+    }
+    const newExpression = newParts.join(" ");
+    if (isOperator(newExpression.charAt(0))) {
+      setAnswer(eval(answer + newExpression));
+    } else {
+      setAnswer(eval(newExpression));
+    }
+    setCurrentVar("");
+  };
+
+  if (regArr[i+2] === '-') {
+            result = +regArr[i]/(-+regArr[i+3]);
+            newReg.splice(i, 4, result);
+          } else {
+            result = +regArr[i]/(+regArr[i+2]);
+            newReg.splice(i, 3, result);
+          }
+
+/*if (regArr[i] === '/' || regArr[i] === '*') {
+        if (regArr[i+1] === '-') {
+          let expressionStr = regArr.slice(i-1, i+2)
+          result += eval(expressionStr.join(''));
+        } else {
+          let expressionStr = regArr.slice(i-1, i+1)
+          result += eval(expressionStr.join(''));
+        }
+      }*/
+
+const calculate = () => {
+    let regArr = reg.split(' ');
+    console.log(regArr);
+    let newReg = []
+    //console.log(regArr)
+    let i = 0;
+    
+    do {
+      let result = 0;
+      switch (regArr[i+1]) {
+        case '/':
+          if (regArr[i+2] === '-') {
+            result = Number(regArr[i])/(-Number(regArr[i+3]));
+            newReg.push(result);
+            i += 3;
+          } else {
+            result = Number(regArr[i])/Number(regArr[i+2]);
+            newReg.push(result);
+            i += 2;
+          }
+          break;
+
+        case '*':
+          if (regArr[i+2] === '-') {
+            result = Number(regArr[i])/(-Number(regArr[i+3]));
+            newReg.push(result);
+            i += 3;
+          } else {
+            result = Number(regArr[i])/Number(regArr[i+2]);
+            newReg.push(result);
+            i += 2;
+          }
+          break;
+
+        case '+':
+          if (regArr[i+2] === '-') {
+            if (newReg) {
+              newReg.push(Number(regArr[i]));
+              newReg.push(regArr[i+2]);
+              i += 3;
+            } else {
+              newReg.push(regArr[i+2]);
+              i += 3;
+            }
+          } else {
+            if (newReg) {
+              newReg.push(Number(regArr[i]));
+              newReg.push(regArr[i+1]);
+              i += 2;
+            } else {
+              newReg.push(regArr[i+1]);
+              i += 2;
+            }
+          }
+          break;
+
+        case '-':
+          if (regArr[i+2] === '-') {
+            if (newReg) {
+              newReg.push(Number(regArr[i]));
+              newReg.push(regArr[i+2]);
+              i += 3;
+            } else {
+              newReg.push(regArr[i+2]);
+              i += 3;
+            }
+          } else {
+            if (newReg) {
+              newReg.push(Number(regArr[i]));
+              newReg.push(regArr[i+1]);
+              i += 2;
+            } else {
+              newReg.push(regArr[i+1]);
+              i += 2;
+            }
+          }
+          break;
+      
+        default:
+          newReg.push(Number(regArr[i]));
+          break;
+      }
+    } while (i < regArr.length);
+    console.log(newReg);
+  };
