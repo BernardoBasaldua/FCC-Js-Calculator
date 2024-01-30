@@ -80,7 +80,7 @@ function App() {
 
   const calculate = (expresion) => {
     // Utilizamos una expresión regular para dividir la cadena en números y operadores
-    const tokens = expresion.match(/(\d+\.\d+|\d+|\+|\-|\*|\/)/g);
+    const tokens = expresion.match(/(\d+\.\d+|\d+|\+|\*|\/)/g);
 
     // Realizamos las multiplicaciones y divisiones
     for (let i = 0; i < tokens.length; i++) {
